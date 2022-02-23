@@ -75,7 +75,7 @@ public class CDVFtp extends CordovaPlugin {
     }
 
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
+    public boolean execute(final String action, final JSONArray args, final CallbackContext callbackContext) {
         Log.d(TAG, "execute: action=" + action);
         try {
             switch (action) {
@@ -98,24 +98,30 @@ public class CDVFtp extends CordovaPlugin {
                     callbackContext.success(deleteFile(args.getString(0)));
                     break;
                 case "uploadFile":
-                    cordova.getThreadPool().execute(() -> {
-                        Log.d(TAG, "execute: Created new thread to execute uploadFile...");
-                        try {
-                            callbackContext.success(uploadFile(args.getString(0), args.getString(1), callbackContext));
-                        } catch (Exception e) {
-                            Log.e(TAG, "execute: upload error=" + e.toString());
-                            callbackContext.error(e.toString());
+                    cordova.getThreadPool().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d(TAG, "execute: Created new thread to execute uploadFile...");
+                            try {
+                                callbackContext.success(uploadFile(args.getString(0), args.getString(1), callbackContext));
+                            } catch (Exception e) {
+                                Log.e(TAG, "execute: upload error=" + e.toString());
+                                callbackContext.error(e.toString());
+                            }
                         }
                     });
                     break;
                 case "downloadFile":
-                    cordova.getThreadPool().execute(() -> {
-                        Log.d(TAG, "execute: Created new thread to execute downloadFile...");
-                        try {
-                            callbackContext.success(downloadFile(args.getString(0), args.getString(1), callbackContext));
-                        } catch (Exception e) {
-                            Log.e(TAG, "execute: download error=" + e.toString());
-                            callbackContext.error(e.toString());
+                    cordova.getThreadPool().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d(TAG, "execute: Created new thread to execute downloadFile...");
+                            try {
+                                callbackContext.success(downloadFile(args.getString(0), args.getString(1), callbackContext));
+                            } catch (Exception e) {
+                                Log.e(TAG, "execute: download error=" + e.toString());
+                                callbackContext.error(e.toString());
+                            }
                         }
                     });
                     break;
@@ -168,7 +174,7 @@ public class CDVFtp extends CordovaPlugin {
             protocol = "TLS";
         }
         // trust every certificate given by the remote host
-        TrustManager[] trustManager = new TrustManager[]{new X509TrustManager() {
+        TrustManager[] trustManager = new TrustManager[] { new X509TrustManager() {
             public X509Certificate[] getAcceptedIssuers() {
                 return null;
             }

@@ -39,7 +39,6 @@ function removePathProtocolPrefix(path) {
  * @constructor
  */
 function Ftp() {
-    console.debug("Ftp: constructor...");
 }
 
 /**
@@ -62,7 +61,6 @@ function Ftp() {
  * @param {function} errorCallback The error callback. If triggered, means init fail.
  */
 Ftp.prototype.setSecurity = function (ftpsType, protocol, successCallback, errorCallback) {
-    console.debug("Ftp: setSecurity: ftpsType=" + ftpsType + ", protocol=" + protocol);
     exec(successCallback,
         errorCallback,
         "Ftp",
@@ -85,7 +83,6 @@ Ftp.prototype.setSecurity = function (ftpsType, protocol, successCallback, error
  * @param {function} errorCallback The error callback. If triggered, means fail.
  */
 Ftp.prototype.connect = function (address, username, password, successCallback, errorCallback) {
-    console.debug("Ftp: connect: address=" + address + ", username=" + username + ", password=***");
     exec(successCallback,
         errorCallback,
         "Ftp",
@@ -109,7 +106,6 @@ Ftp.prototype.connect = function (address, username, password, successCallback, 
  * @param {function} errorCallback The error callback.
  */
 Ftp.prototype.ls = function (remotePath, successCallback, errorCallback) {
-    console.debug("Ftp: ls: remotePath=" + remotePath);
     exec(function (fileList) {
             if (fileList instanceof Array) {
                 successCallback(fileList);
@@ -128,7 +124,6 @@ Ftp.prototype.ls = function (remotePath, successCallback, errorCallback) {
  * @param {function} errorCallback The error callback.
  */
 Ftp.prototype.mkdir = function (remotePath, successCallback, errorCallback) {
-    console.debug("Ftp: mkdir: remotePath=" + remotePath);
     exec(successCallback,
         errorCallback,
         "Ftp",
@@ -145,7 +140,6 @@ Ftp.prototype.mkdir = function (remotePath, successCallback, errorCallback) {
  * @param {function} errorCallback The error callback.
  */
 Ftp.prototype.rmdir = function (remotePath, successCallback, errorCallback) {
-    console.debug("Ftp: rmdir: remotePath=" + remotePath);
     exec(successCallback,
         errorCallback,
         "Ftp",
@@ -160,7 +154,6 @@ Ftp.prototype.rmdir = function (remotePath, successCallback, errorCallback) {
  * @param {function} errorCallback The error callback.
  */
 Ftp.prototype.rm = function (remotePath, successCallback, errorCallback) {
-    console.debug("Ftp: rm: remotePath=" + remotePath);
     exec(successCallback,
         errorCallback,
         "Ftp",
@@ -178,7 +171,6 @@ Ftp.prototype.rm = function (remotePath, successCallback, errorCallback) {
  * @param {function} errorCallback The error callback.
  */
 Ftp.prototype.upload = function (localPath, remotePath, successCallback, errorCallback) {
-    console.debug("Ftp: upload: localPath=" + localPath + ", remotePath=" + remotePath);
     exec(successCallback,
         errorCallback,
         "Ftp",
@@ -196,7 +188,6 @@ Ftp.prototype.upload = function (localPath, remotePath, successCallback, errorCa
  * @param {function} errorCallback The error callback.
  */
 Ftp.prototype.download = function (localPath, remotePath, successCallback, errorCallback) {
-    console.debug("Ftp: download: localPath=" + localPath + ", remotePath=" + remotePath);
     exec(successCallback,
         errorCallback,
         "Ftp",
@@ -210,7 +201,6 @@ Ftp.prototype.download = function (localPath, remotePath, successCallback, error
  * @param {function} errorCallback The error callback.
  */
 Ftp.prototype.cancel = function (successCallback, errorCallback) {
-    console.debug("Ftp: cancel...");
     exec(successCallback,
         errorCallback,
         "Ftp",
@@ -224,7 +214,6 @@ Ftp.prototype.cancel = function (successCallback, errorCallback) {
  * @param {function} errorCallback The error callback.
  */
 Ftp.prototype.disconnect = function (successCallback, errorCallback) {
-    console.debug("Ftp: disconnect...");
     exec(successCallback,
         errorCallback,
         "Ftp",
@@ -238,7 +227,6 @@ Ftp.prototype.disconnect = function (successCallback, errorCallback) {
  * @param {function} errorCallback The error callback.
  */
 Ftp.prototype.isConnected = function (successCallback, errorCallback) {
-    console.debug("Ftp: judge isConnected...");
     exec(successCallback,
         errorCallback,
         "Ftp",
