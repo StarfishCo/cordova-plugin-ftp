@@ -359,7 +359,7 @@ public class CDVFtp extends CordovaPlugin {
             // arg `true` to perform a legal disconnect procedure (an `QUIT` command is sent
             // to the server),
             // arg `false` to break the connection without advice.
-            client.disconnect(true);
+            client.disconnect(false);
             Log.i(TAG, "disconnect: Succeed to disconnect from address=" + this.address);
         } else {
             Log.i(TAG, "disconnect: No need to disconnect as client is not connected.");
