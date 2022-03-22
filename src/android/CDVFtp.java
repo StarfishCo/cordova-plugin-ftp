@@ -80,7 +80,7 @@ public class CDVFtp extends CordovaPlugin {
         try {
             switch (action) {
                 case "setSecurity":
-                    callbackContext.success(setSecurity(args.getString(0), args.getString(1)));
+                    callbackContext.success(setSecurity(args.getString(0)));
                     break;
                 case "connect":
                     callbackContext.success(connect(args.getString(0), args.getString(1), args.getString(2)));
@@ -146,8 +146,8 @@ public class CDVFtp extends CordovaPlugin {
         return true;
     }
 
-    private String setSecurity(String ftpsType, String protocol) {
-        Log.d(TAG, "setSecurity: ftpsType=" + ftpsType + ", protocol=" + protocol);
+    private String setSecurity(String ftpsType) {
+        Log.d(TAG, "setSecurity: ftpsType=" + ftpsType + ", protocol=TLSv1.2");
         // process ftps type
         int securityType;
         if (ftpsType == null || ftpsType.length() == 0 || "default".equalsIgnoreCase(ftpsType)) {
@@ -169,10 +169,6 @@ public class CDVFtp extends CordovaPlugin {
             }
         }
         client.setSecurity(securityType);
-        // process cert and protocol
-        if (protocol == null || protocol.length() == 0 || "default".equalsIgnoreCase(protocol)) {
-            protocol = "TLS";
-        }
         // trust every certificate given by the remote host
         TrustManager[] trustManager = new TrustManager[]{new X509TrustManager() {
             public X509Certificate[] getAcceptedIssuers() {
@@ -187,14 +183,14 @@ public class CDVFtp extends CordovaPlugin {
         }};
         SSLContext sslContext = null;
         try {
-            sslContext = SSLContext.getInstance(protocol);
+            sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, trustManager, new SecureRandom());
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             throw new CDVFtpException(e.toString());
         }
-        SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+        SSLSocketFactory sslSocketFactory = new TLSSocketFactory(sslContext.getSocketFactory());
         client.setSSLSocketFactory(sslSocketFactory);
-        Log.i(TAG, "setSecurity: Set ftp security type to: " + ftpsType + ", protocol=" + protocol);
+        Log.i(TAG, "setSecurity: Set ftp security type to: " + ftpsType + ", protocol=TLSv1.2");
         return OK;
     }
 
@@ -304,7 +300,12 @@ public class CDVFtp extends CordovaPlugin {
             throw new CDVFtpException(ERROR_NO_ARG_REMOTEPATH);
         }
         String remoteParentPath = remotePath.substring(0, remotePath.lastIndexOf(FILE_SEPARATOR) + 1);
+        if (remoteParentPath == null || remoteParentPath.length() == 0) {
+            remoteParentPath = "/";
+        }
+        Log.d(TAG, "Remote parent path: " + remoteParentPath);
         String remoteFileName = remotePath.substring(remotePath.lastIndexOf(FILE_SEPARATOR) + 1);
+        Log.d(TAG, "Remote file name: " + remoteFileName);
         client.changeDirectory(remoteParentPath);
         File file = new File(localPath);
         try (InputStream in = new FileInputStream(file)) {

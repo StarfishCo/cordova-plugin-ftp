@@ -42,6 +42,7 @@
         </config-file>
 
         <source-file src="src/android/CDVFtp.java" target-dir="src/io/github/xfally/cordova/plugin/ftp" />
+        <source-file src="src/android/TLSSocketFactory.java" target-dir="src/io/github/xfally/cordova/plugin/ftp" />
 
         <lib-file src="src/android/libs/ftp4j-1.7.2.jar" />
     </platform>
