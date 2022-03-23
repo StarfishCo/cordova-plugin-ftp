@@ -54,19 +54,15 @@ function Ftp() {
  *                          - "FTPS": FTP over implicit TLS/SSL.
  *                          - "FTPES": FTP over explicit TLS/SSL.
  *                          Default value is "FTPES" if pass arg "default" or empty string.
- * @param {string} protocol The ftp protocol.
- *                          Accept these values: `SSL`, `SSLv2`, `SSLv3`, `TLS`, `TLSv1`, `TLSv1.1`, `TLSv1.2`.
- *                          More info: https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#SSLContext
- *                          Default value is "TLS" if pass arg "default" or empty string.
  * @param {function} successCallback The success callback. If triggered, means success.
  * @param {function} errorCallback The error callback. If triggered, means init fail.
  */
-Ftp.prototype.setSecurity = function (ftpsType, protocol, successCallback, errorCallback) {
-    console.debug("Ftp: setSecurity: ftpsType=" + ftpsType + ", protocol=" + protocol);
+Ftp.prototype.setSecurity = function (ftpsType, successCallback, errorCallback) {
+    console.debug("Ftp: setSecurity: ftpsType=" + ftpsType + ", protocol=TLSv1.2");
     exec(successCallback,
         errorCallback,
         "Ftp",
-        "setSecurity", [ftpsType, protocol]);
+        "setSecurity", [ftpsType]);
 }
 
 /**

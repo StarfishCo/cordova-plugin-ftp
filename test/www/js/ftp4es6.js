@@ -27,9 +27,9 @@ class Ftp4es6 {
         console.debug("Ftp4es6: constructor...");
     }
 
-    setSecurity(ftpsType, protocol) {
+    setSecurity(ftpsType) {
         return new Promise(function (resolve, reject) {
-            cordova.plugin.ftp.setSecurity(ftpsType, protocol, (result) => {
+            cordova.plugin.ftp.setSecurity(ftpsType, (result) => {
                 console.info("Ftp4es6: setSecurity result=" + result);
                 resolve(result);
             }, (error) => {
