@@ -80,10 +80,18 @@ public class CDVFtp extends CordovaPlugin {
         try {
             switch (action) {
                 case "setSecurity":
-                    callbackContext.success(setSecurity(args.getString(0)));
+                    try {
+                        callbackContext.success(setSecurity(args.getString(0)));
+                    } catch (Exception e) {
+                        callbackContext.error(getMessageFromException(e));
+                    }
                     break;
                 case "connect":
-                    callbackContext.success(connect(args.getString(0), args.getString(1), args.getString(2)));
+                    try {
+                        callbackContext.success(connect(args.getString(0), args.getString(1), args.getString(2)));
+                    } catch (Exception e) {
+                        callbackContext.error(getMessageFromException(e));
+                    }
                     break;
                 case "list":
                     callbackContext.success(list(args.getString(0)));
@@ -106,7 +114,7 @@ public class CDVFtp extends CordovaPlugin {
                                 callbackContext.success(uploadFile(args.getString(0), args.getString(1), callbackContext));
                             } catch (Exception e) {
                                 Log.e(TAG, "execute: upload error=" + e.toString());
-                                callbackContext.error(e.toString());
+                                callbackContext.error(getMessageFromException(e));
                             }
                         }
                     });
@@ -132,7 +140,11 @@ public class CDVFtp extends CordovaPlugin {
                     callbackContext.success(disconnect());
                     break;
                 case "isConnected":
-                    callbackContext.success(isConnected());
+                    try {
+                        callbackContext.success(isConnected());
+                    } catch (Exception e) {
+                        callbackContext.error(getMessageFromException(e));
+                    }
                     break;
                 default:
                     Log.e(TAG, "execute: Failed to exec action/cmd: " + action + ", which is not found or supported!");
@@ -144,6 +156,12 @@ public class CDVFtp extends CordovaPlugin {
         }
         Log.d(TAG, "execute: Succeed to exec action/cmd: " + action);
         return true;
+    }
+
+    private String getMessageFromException(Exception e) {
+        if (e == null) return "An unexpected error occurred.";
+        if (e.getMessage() != null && e.getMessage().length() > 0) return e.getMessage();
+        return e.toString();
     }
 
     private String setSecurity(String ftpsType) {
